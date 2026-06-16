@@ -276,7 +276,27 @@ return {
       config = function()
          require("zen-mode").setup({
             window = {
-               width = 80,
+               -- A floating window's width is the *total* width -- the
+               -- line-number gutter and sign column are drawn inside it. So
+               -- plain `width = 80` gives only ~74 cols of text. Return
+               -- 80 + gutters so the actual TEXT column is a true 80.
+               width = function()
+                  local text = 80
+                  local gutter = 0
+                  if vim.wo.number or vim.wo.relativenumber then
+                     -- numberwidth, or wider if the file needs more digits
+                     local digits = #tostring(vim.api.nvim_buf_line_count(0)) + 1
+                     gutter = gutter + math.max(vim.o.numberwidth, digits)
+                  end
+                  local sc = vim.wo.signcolumn
+                  if sc == "yes" or sc == "auto" then
+                     gutter = gutter + 2
+                  else
+                     local n = sc:match("^yes:(%d+)")
+                     if n then gutter = gutter + 2 * tonumber(n) end
+                  end
+                  return text + gutter
+               end,
                col_offset = -20,
                options = {
                   number = true,
