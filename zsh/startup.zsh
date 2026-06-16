@@ -1,25 +1,35 @@
-# banner_logs.zsh — the dim log lines below the banner, one func each
+# startup.zsh — shell startup functions, run once at login from .zshrc
 #
-# Registry: funcs run top-to-bottom when banner_render is called.
-# Each func holds one log message — it calls banner_log "text", and may
-# do the work that produces it (banner_run demotes noisy commands).
-# Add a func below and list it here; remove a line to silence it.
+# Most register a dim log line below the banner: banner_render walks
+# BANNER_LOG_FUNCS top-to-bottom and each listed func calls banner_log "text"
+# (and may do the startup work that produces it — banner_run demotes a noisy
+# command's output into the logs, e.g. log_ssh's ssh-agent handling).
+# Add a func below and list it in the registry; remove a line to silence it.
 
 BANNER_LOG_FUNCS=(
     log_shell
-    log_remote
+    log_host
     # log_tmux
-    log_start
 )
 
-log_shell() { banner_log "zsh $ZSH_VERSION · ${HOST%%.*}" }
-
-log_remote() {
-    if [[ -n $SSH_CONNECTION || -n $SSH_TTY ]]; then
-        banner_log "session · ssh from ${SSH_CONNECTION%% *}"
-    else
-        banner_log "session · local"
+# zsh version + startup time, e.g. "zsh 5.9 · 361 ms".
+# _BANNER_T0 is stamped on .zshrc line 1; the timing is dropped if it's unset.
+log_shell() {
+    local seg="v$ZSH_VERSION"
+    if [[ -n $_BANNER_T0 ]]; then
+        local -i ms=$(( (EPOCHREALTIME - _BANNER_T0) * 1000 ))
+        seg+=" · ${ms} ms"
     fi
+    banner_log "$seg"
+}
+
+# host + session type, e.g. "isg-darwin · local" / "isg-darwin · ssh from 10.0.0.5"
+log_host() {
+    local where="local"
+    if [[ -n $SSH_CONNECTION || -n $SSH_TTY ]]; then
+        where="ssh from ${SSH_CONNECTION%% *}"
+    fi
+    banner_log "${HOST%%.*} · ${where}"
 }
 
 # tmux, one minimal line — inside: current session · clients · detached;
@@ -36,13 +46,6 @@ log_tmux() {
     (( ${#detached} )) && seg+=("${#detached} detached")
     (( ${#seg} )) || return 0
     banner_log "tmux · ${(j: · :)seg}"
-}
-
-# zshrc start (_BANNER_T0, stamped on .zshrc line 1) → banner render
-log_start() {
-    [[ -n $_BANNER_T0 ]] || return 0
-    local -i ms=$(( (EPOCHREALTIME - _BANNER_T0) * 1000 ))
-    banner_log "start · ${ms} ms"
 }
 
 # ssh-agent: reuse a reachable agent, add the key only if missing —

@@ -2,7 +2,7 @@
 # theme, banner, plugins or highlighting; a bare shell for testing
 [[ -n $ZSH_BARE ]] && return
 
-# startup timing — read by log_start (banner_logs.zsh) at render
+# startup timing — read by log_shell (startup.zsh) at render
 zmodload zsh/datetime
 typeset -gF _BANNER_T0=$EPOCHREALTIME
 
@@ -190,7 +190,7 @@ fi
 unset _brew_prefix
 
 # ── startup banner (engine lives in the isg theme) ──
-source "$HOME/.dotfiles/zsh/banner_logs.zsh"
+source "$HOME/.dotfiles/zsh/startup.zsh"
 
 banner_info "%Bisg%b · zsh"
 banner_info "%D{%a %d %b %Y · %H:%M}"
