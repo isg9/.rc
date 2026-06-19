@@ -392,6 +392,14 @@ return {
       lazy = true,
    },
 
+   -- hr: reading-list sidebar over the `hr` CLI. Portable Vimscript plugin
+   -- (works in vim too); replaces the old lua/hr/init.lua module. Loaded on
+   -- the :Hr* commands, fired by <leader>r (see lua/keymaps.lua).
+   {
+      "isdg/hr.vim",
+      cmd = { "Hr", "HrToggle", "HrOpen", "HrClose", "HrStart", "HrRefresh", "HrSync" },
+   },
+
    -- TODO: nvim-dap (Debug Adapter Protocol) - enable after learning raw GDB
    -- Plugins: mfussenegger/nvim-dap, rcarriga/nvim-dap-ui, theHamsta/nvim-dap-virtual-text
    -- Install codelldb via Mason: :MasonInstall codelldb
