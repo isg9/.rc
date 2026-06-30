@@ -401,6 +401,7 @@ return {
       cmd = { "Hr", "HrToggle", "HrOpen", "HrClose", "HrStart", "HrRefresh", "HrSync" },
    },
 
+<<<<<<< Updated upstream
    -- flash: label-based visual jump (the avy/EasyMotion equivalent). Trigger,
    -- type 1-2 chars of any on-screen target, then a label appears -- type it to
    -- jump. O(1) regardless of distance, complementing <leader>C (BLines) which
@@ -422,6 +423,33 @@ return {
       },
    },
 
+||||||| Stash base
+=======
+   -- harpoon: pin the handful of files in the current task to ordered slots and
+   -- jump to them with one keystroke (stable slot, cursor position preserved).
+   -- Per-project list, persisted across sessions. All under the <leader>h prefix
+   -- (freed by moving split-nav to <C-h/j/k/l>):
+   --   <leader>ha  -> add current file to the list
+   --   <leader>he  -> toggle the quick menu (reorder/delete inline)
+   --   <leader>h1..h4 -> jump to slot 1-4
+   {
+      "ThePrimeagen/harpoon",
+      branch = "harpoon2",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      config = function()
+         local harpoon = require("harpoon")
+         harpoon:setup()
+         local map = vim.keymap.set
+         map("n", "<leader>ha", function() harpoon:list():add() end, { desc = "Harpoon add file" })
+         map("n", "<leader>he", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon menu" })
+         for i = 1, 4 do
+            map("n", "<leader>h" .. i, function() harpoon:list():select(i) end,
+               { desc = "Harpoon jump to " .. i })
+         end
+      end,
+   },
+
+>>>>>>> Stashed changes
    -- TODO: nvim-dap (Debug Adapter Protocol) - enable after learning raw GDB
    -- Plugins: mfussenegger/nvim-dap, rcarriga/nvim-dap-ui, theHamsta/nvim-dap-virtual-text
    -- Install codelldb via Mason: :MasonInstall codelldb

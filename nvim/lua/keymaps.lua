@@ -35,10 +35,8 @@ lmap("n", "Q", "<cmd>qa!<CR>", { desc = "Quit all without saving" })
 
 
 -- ─── Split management ───────────────────────────────────────────
-lmap("n", "h", "<C-w>h", { desc = "Move to left split" })
-lmap("n", "j", "<C-w>j", { desc = "Move to below split" })
-lmap("n", "k", "<C-w>k", { desc = "Move to above split" })
-lmap("n", "l", "<C-w>l", { desc = "Move to right split" })
+-- Split-navigation keymaps removed; the <leader>h prefix is now harpoon
+-- (see lua/plugins.lua). Use native <C-w>h/j/k/l to move between splits.
 
 map("n", "<leader>+", "<cmd>resize +5<CR>", { desc = "Increase height" })
 map("n", "<leader>-", "<cmd>resize -5<CR>", { desc = "Decrease height" })
