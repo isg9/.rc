@@ -436,7 +436,11 @@ return {
       dependencies = { "nvim-lua/plenary.nvim" },
       config = function()
          local harpoon = require("harpoon")
-         harpoon:setup()
+         -- save_on_toggle: persist menu edits (e.g. dd to delete a line) when the
+         -- menu closes via q/<Esc>, not just on :w. Without it, deletions are lost.
+         harpoon:setup({
+            settings = { save_on_toggle = true },
+         })
          local map = vim.keymap.set
          map("n", "<leader>ua", function() harpoon:list():add() end, { desc = "Harpoon add file" })
          map("n", "<leader>ud", function() harpoon:list():remove() end, { desc = "Harpoon remove file" })
