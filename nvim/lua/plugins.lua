@@ -424,11 +424,12 @@ return {
 
    -- harpoon: pin the handful of files in the current task to ordered slots and
    -- jump to them with one keystroke (stable slot, cursor position preserved).
-   -- Per-project list, persisted across sessions. All under the <leader>h prefix
-   -- (freed by moving split-nav to <C-h/j/k/l>):
-   --   <leader>ha  -> add current file to the list
-   --   <leader>he  -> toggle the quick menu (reorder/delete inline)
-   --   <leader>h1..h4 -> jump to slot 1-4
+   -- Per-project list, persisted across sessions. All under the <leader>u prefix
+   -- (split-nav stays on <leader>h/j/k/l):
+   --   <leader>ua  -> add current file to the list
+   --   <leader>ud  -> remove current file from the list (or dd a line in the menu)
+   --   <leader>ue  -> toggle the quick menu (reorder/delete inline)
+   --   <leader>u1..u9, u0 -> jump to slot 1-10
    {
       "ThePrimeagen/harpoon",
       branch = "harpoon2",
@@ -437,10 +438,12 @@ return {
          local harpoon = require("harpoon")
          harpoon:setup()
          local map = vim.keymap.set
-         map("n", "<leader>ha", function() harpoon:list():add() end, { desc = "Harpoon add file" })
-         map("n", "<leader>he", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon menu" })
-         for i = 1, 4 do
-            map("n", "<leader>h" .. i, function() harpoon:list():select(i) end,
+         map("n", "<leader>ua", function() harpoon:list():add() end, { desc = "Harpoon add file" })
+         map("n", "<leader>ud", function() harpoon:list():remove() end, { desc = "Harpoon remove file" })
+         map("n", "<leader>ue", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon menu" })
+         for i = 1, 10 do
+            local key = (i == 10) and "0" or tostring(i)
+            map("n", "<leader>u" .. key, function() harpoon:list():select(i) end,
                { desc = "Harpoon jump to " .. i })
          end
       end,
