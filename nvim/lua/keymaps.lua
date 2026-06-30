@@ -302,7 +302,9 @@ map("n", "<leader>gk", "<cmd>BCommits<CR>", { desc = "Git commits for current fi
 
 
 -- ─── Format ────────────────────────────────────────────────────
-map("n", "<leader>ff", function()
+-- Moved from <leader>ff to <leader>F so the f prefix is free for flash jump
+-- (<leader>f, see flash.nvim in lua/plugins.lua).
+map("n", "<leader>F", function()
    require("conform").format({ async = true, lsp_fallback = true })
 end, { desc = "Format buffer" })
 

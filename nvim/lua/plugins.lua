@@ -401,6 +401,27 @@ return {
       cmd = { "Hr", "HrToggle", "HrOpen", "HrClose", "HrStart", "HrRefresh", "HrSync" },
    },
 
+   -- flash: label-based visual jump (the avy/EasyMotion equivalent). Trigger,
+   -- type 1-2 chars of any on-screen target, then a label appears -- type it to
+   -- jump. O(1) regardless of distance, complementing <leader>C (BLines) which
+   -- is search-list style. Single binding for now; format lives on <leader>F.
+   --   <leader>f -> jump (normal/visual/operator-pending: d<leader>f<label>)
+   --   <c-s>     -> toggle flash labels while typing a / search (no vi conflict)
+   {
+      "folke/flash.nvim",
+      event = "VeryLazy",
+      -- modes.search.enabled = true: show jump labels on every / and ? search
+      -- automatically (no need to press <c-s> first). <c-s> still toggles it off
+      -- mid-search if a particular search gets too noisy.
+      opts = {
+         modes = { search = { enabled = true } },
+      },
+      keys = {
+         { "<leader>f", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash jump" },
+         { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      },
+   },
+
    -- TODO: nvim-dap (Debug Adapter Protocol) - enable after learning raw GDB
    -- Plugins: mfussenegger/nvim-dap, rcarriga/nvim-dap-ui, theHamsta/nvim-dap-virtual-text
    -- Install codelldb via Mason: :MasonInstall codelldb
