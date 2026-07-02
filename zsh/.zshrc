@@ -166,6 +166,11 @@ SAVEHIST=50000
 export PATH="$PATH:/Users/isg/.local/bin"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# zoxide — frecency directory jumping. `z foo` jumps to the best match, `zi foo`
+# picks via fzf. Builtin `cd` is left intact (no surprise remap).
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+
 export PATH="/usr/local/opt/llvm@17/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"   # cargo-installed binaries (plc)
