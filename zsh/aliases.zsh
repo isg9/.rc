@@ -13,6 +13,7 @@ alias ts='tig status'
 alias v='vim'
 alias v.='vim .'
 alias c='claude'
+alias tm='tmux'
 
 # Palace notes — thin `plc` wrappers now ship with the dotfiles. PALACE_DIR
 # points at the vault (decrypted into ~/palace/palace/notes).
